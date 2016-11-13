@@ -22,7 +22,7 @@ use Navel::Utils qw/
 sub register {
     my ($self, $application, $register_options) = @_;
 
-    croak('register_options must be a HASH') unless ref $register_options eq 'HASH';
+    croak('register_options must be a HASH reference') unless ref $register_options eq 'HASH';
 
     croak('logger must be of Navel::Logger class') unless blessed($register_options->{logger}) && $register_options->{logger}->isa('Navel::Logger');
 
@@ -30,8 +30,8 @@ sub register {
         ok_ko => sub {
             my ($controller, $ok, $ko) = @_;
 
-            croak('ok must be a ARRAY') unless ref $ok eq 'ARRAY';
-            croak('ko must be a ARRAY') unless ref $ko eq 'ARRAY';
+            croak('ok must be a ARRAY reference') unless ref $ok eq 'ARRAY';
+            croak('ko must be a ARRAY reference') unless ref $ko eq 'ARRAY';
 
             $register_options->{logger}->info(Navel::Logger::Message->stepped_message($_)) for (
                 @{$ok},
