@@ -12,15 +12,14 @@ use Navel::Base;
 use Mojo::Base 'Mojolicious::Plugin';
 
 use Navel::Logger::Message;
-use Navel::Utils qw/
-    croak
-    blessed
-/;
+use Navel::Utils 'blessed';
 
 #-> methods
 
 sub register {
     my ($self, $application, $register_options) = @_;
+    
+    $application->plugin('Navel::Mojolicious::Plugin::API::StdResponses');
 
     croak('register_options must be a HASH reference') unless ref $register_options eq 'HASH';
 
@@ -28,20 +27,16 @@ sub register {
 
     $application->helper(
         'navel.logger.ok_ko' => sub {
-            my ($controller, $ok, $ko) = @_;
+            my $controller = shift;
 
-            croak('ok must be a ARRAY reference') unless ref $ok eq 'ARRAY';
-            croak('ko must be a ARRAY reference') unless ref $ko eq 'ARRAY';
+            my $ok_ko = $controller->navel->api->definitions->ok_ko(@_);
 
             $register_options->{logger}->info(Navel::Logger::Message->stepped_message($_)) for (
-                @{$ok},
-                @{$ko}
+                @{$ok_ko->{ok}},
+                @{$ok_ko->{ko}}
             );
 
-            {
-                ok => $ok,
-                ko => $ko
-            };
+
         }
     )
 }

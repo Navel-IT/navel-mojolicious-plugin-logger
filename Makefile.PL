@@ -33,6 +33,7 @@ WriteMakefile(
     PREREQ_PM => {
         'Navel::Base' => 0,
         'Navel::Logger' => 0,
+        'Navel::Mojolicious::Plugin::API::StdResponses' => 0,
         'Mojolicious' => 0
     },
     CONFIGURE_REQUIRES => {
