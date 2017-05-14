@@ -27,7 +27,7 @@ sub register {
     croak('logger must be of Navel::Logger class') unless blessed($register_options->{logger}) && $register_options->{logger}->isa('Navel::Logger');
 
     $application->helper(
-        ok_ko => sub {
+        'navel.logger.ok_ko' => sub {
             my ($controller, $ok, $ko) = @_;
 
             croak('ok must be a ARRAY reference') unless ref $ok eq 'ARRAY';
